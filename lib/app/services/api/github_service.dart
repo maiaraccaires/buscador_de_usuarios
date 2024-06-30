@@ -1,5 +1,6 @@
 import 'package:http/http.dart';
 
+import '../../models/repositories_model.dart';
 import '../../models/users_model.dart';
 
 abstract class GitHubService {
@@ -9,4 +10,7 @@ abstract class GitHubService {
       required String value});
 
   Future<UsersModel> getDetailUser(Client client, {required String username});
+
+  Future<List<RepositoriesModel>> getRepositories(Client client,
+      {required String endpoint});
 }

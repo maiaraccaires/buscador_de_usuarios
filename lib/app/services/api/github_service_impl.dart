@@ -68,6 +68,7 @@ class GitHubServiceImpl implements GitHubService {
     }
   }
 
+  @override
   Future<List<RepositoriesModel>> getRepositories(Client client,
       {required String endpoint}) async {
     try {
