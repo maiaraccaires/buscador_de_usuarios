@@ -2,6 +2,7 @@ import 'package:buscador_de_usuarios/app/controllers/users_controller.dart';
 import 'package:buscador_de_usuarios/app/models/users_model.dart';
 import 'package:buscador_de_usuarios/app/services/api/github_service_impl.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:get_it/get_it.dart';
 import 'package:http/http.dart';
 import 'package:localstorage/localstorage.dart';
 import 'package:mocktail/mocktail.dart';
@@ -16,6 +17,7 @@ void main() {
   late UsersController controller;
   late MockGitHubServiceImpl mockService;
   late MockLocalStorage mockStorage;
+  final GetIt injector = GetIt.instance;
 
   setUpAll(() {
     registerFallbackValue(FakeClient());
@@ -25,8 +27,18 @@ void main() {
     setUp(() {
       mockService = MockGitHubServiceImpl();
       mockStorage = MockLocalStorage();
-      controller =
-          UsersController(service: mockService, localStorage: mockStorage);
+
+      injector.registerSingleton<GitHubServiceImpl>(mockService);
+      injector.registerSingleton<LocalStorage>(mockStorage);
+
+      controller = UsersController(
+        service: injector<GitHubServiceImpl>(),
+        localStorage: injector<LocalStorage>(),
+      );
+    });
+
+    tearDown(() {
+      injector.reset();
     });
 
     test("Salvando histórico de pesquisa", () async {

@@ -2,6 +2,7 @@ import 'package:buscador_de_usuarios/app/controllers/repositories_controller.dar
 import 'package:buscador_de_usuarios/app/models/repositories_model.dart';
 import 'package:buscador_de_usuarios/app/services/api/github_service_impl.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:get_it/get_it.dart';
 import 'package:http/http.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -12,6 +13,7 @@ class FakeClient extends Fake implements Client {}
 void main() {
   late RepositoriesController controller;
   late MockGitHubServiceImpl mockService;
+  final GetIt injector = GetIt.instance;
 
   setUpAll(() {
     registerFallbackValue(FakeClient());
@@ -20,7 +22,11 @@ void main() {
   group('Testes Repositories Controller', () {
     setUp(() {
       mockService = MockGitHubServiceImpl();
-      controller = RepositoriesController(service: mockService);
+      injector.registerSingleton<GitHubServiceImpl>(mockService);
+
+      controller = RepositoriesController(
+        service: injector<GitHubServiceImpl>(),
+      );
     });
 
     test("Listando repositórios", () async {
