@@ -94,6 +94,10 @@ class UsersController with ChangeNotifier {
     if (searchHistoryJson != null) {
       searchHistory =
           List<Map<String, dynamic>>.from(jsonDecode(searchHistoryJson));
+
+      searchHistory.sort((a, b) =>
+          b["access_date"].toString().compareTo(a["access_date"].toString()));
+
       notifyListeners();
     }
   }
