@@ -34,7 +34,7 @@ class UsersModel {
   factory UsersModel.fromMap(Map<String, dynamic> map) {
     return UsersModel(
       username: map['login'] ?? '',
-      avatar: map['avatar'] ?? '',
+      avatar: map['avatar_url'] ?? '',
       url: map['url'] ?? '',
       qtyfollowers: map['followers']?.toInt() ?? 0,
       qtyfollowing: map['following']?.toInt() ?? 0,
