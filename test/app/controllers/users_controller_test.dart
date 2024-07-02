@@ -41,7 +41,7 @@ void main() {
       injector.reset();
     });
 
-    test("Salvando histórico de pesquisa", () async {
+    test("Pesquisando usuário", () async {
       when(() =>
           mockService.searchUser(any(),
               username: any(named: 'username'),
@@ -52,13 +52,23 @@ void main() {
                 avatar: 'https://avatars.githubusercontent.com/u/7199836?v=4')
           ]);
 
-      when(() => mockStorage.setItem(any(), any()))
-          .thenAnswer((_) async => Future.value());
-
       await controller.searchUser(
           username: 'maiarachagas', filter: 'language', value: 'java');
 
       expect(controller.users!.isNotEmpty, equals(true));
+    });
+
+    test("Salvando histórico de pesquisa", () {
+      when(() => mockStorage.setItem(any(), any()))
+          .thenAnswer((_) async => Future.value());
+
+      when(() => mockStorage.getItem("searchHistory")).thenReturn(
+          '[{"search": "maiarachagas", "field": "language", "value": "java"}]');
+
+      controller.addToSearchHistory(
+          username: 'maiarachagas', filter: 'language', value: 'java');
+
+      expect(controller.searchHistory.isNotEmpty, equals(true));
     });
 
     test("Buscando histórico de pesquisa", () {

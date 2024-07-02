@@ -10,6 +10,7 @@ class SearchHistoryWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var controller = Provider.of<UsersController>(context, listen: false);
     return Consumer<UsersController>(
       builder: (context, value, child) {
         switch (value.status) {
@@ -56,12 +57,10 @@ class SearchHistoryWidget extends StatelessWidget {
                     itemBuilder: ((context, index) {
                       return InkWell(
                         onTap: () {
-                          Provider.of<UsersController>(context, listen: false)
-                              .searchUser(
-                                  username: value.searchHistory[index]
-                                      ["search"],
-                                  filter: value.searchHistory[index]["field"],
-                                  value: value.searchHistory[index]["value"]);
+                          controller.searchUser(
+                              username: value.searchHistory[index]["search"],
+                              filter: value.searchHistory[index]["field"],
+                              value: value.searchHistory[index]["value"]);
 
                           Navigator.of(context).push(
                             MaterialPageRoute(
@@ -70,7 +69,7 @@ class SearchHistoryWidget extends StatelessWidget {
                           );
                         },
                         child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 5.0),
+                          padding: const EdgeInsets.symmetric(vertical: 8.0),
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,

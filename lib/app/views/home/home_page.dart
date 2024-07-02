@@ -35,6 +35,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    var controller = Provider.of<UsersController>(context, listen: false);
     return Scaffold(
       //appBar: AppBar(),
       body: SafeArea(
@@ -94,12 +95,15 @@ class _HomePageState extends State<HomePage> {
                               child: InkWell(
                                 onTap: () {
                                   if (controllerSearch.text.isNotEmpty) {
-                                    Provider.of<UsersController>(context,
-                                            listen: false)
-                                        .searchUser(
-                                            username: controllerSearch.text,
-                                            filter: filter,
-                                            value: txt);
+                                    controller.addToSearchHistory(
+                                        username: controllerSearch.text,
+                                        filter: filter,
+                                        value: txt);
+
+                                    controller.searchUser(
+                                        username: controllerSearch.text,
+                                        filter: filter,
+                                        value: txt);
                                     controllerSearch.clear();
 
                                     Navigator.of(context).push(
@@ -131,11 +135,16 @@ class _HomePageState extends State<HomePage> {
                             filter = value["field"]!;
                             txt = value["value"]!;
                           });
-                          Provider.of<UsersController>(context, listen: false)
-                              .searchUser(
-                                  username: controllerSearch.text,
-                                  filter: filter,
-                                  value: txt);
+
+                          controller.addToSearchHistory(
+                              username: controllerSearch.text,
+                              filter: filter,
+                              value: txt);
+
+                          controller.searchUser(
+                              username: controllerSearch.text,
+                              filter: filter,
+                              value: txt);
 
                           Navigator.of(context).push(
                             MaterialPageRoute(

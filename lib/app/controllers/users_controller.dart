@@ -38,8 +38,6 @@ class UsersController with ChangeNotifier {
     try {
       value = value.isNotEmpty ? value.replaceAll(" ", "+") : value;
 
-      _addToSearchHistory(username: username, filter: filter, value: value);
-
       _users = await service.searchUser(_client,
           username: username, filter: filter, value: value);
 
@@ -67,7 +65,7 @@ class UsersController with ChangeNotifier {
     }
   }
 
-  void _addToSearchHistory(
+  void addToSearchHistory(
       {required String username,
       required String filter,
       required String value}) {
