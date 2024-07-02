@@ -94,14 +94,31 @@ class _UserDetailPageState extends State<UserDetailPage> {
                                         crossAxisAlignment:
                                             CrossAxisAlignment.center,
                                         children: [
-                                          Text(
-                                            "Repositórios: ${value.userDetail!.qtyRepos}",
+                                          Row(
+                                            children: [
+                                              const Icon(Icons.book_outlined,
+                                                  size: 18),
+                                              Text(
+                                                "Repositórios: ${value.userDetail!.qtyRepos}",
+                                              ),
+                                            ],
                                           ),
-                                          Text(
-                                            "Seguidores: ${value.userDetail!.qtyfollowers}",
+                                          Row(
+                                            children: [
+                                              const Icon(Icons.group_outlined,
+                                                  size: 18),
+                                              Text(
+                                                "Seguidores: ${value.userDetail!.qtyfollowers}",
+                                              ),
+                                            ],
                                           ),
-                                          Text(
-                                            "Seguindo ${value.userDetail!.qtyfollowing}",
+                                          Row(
+                                            children: [
+                                              const Icon(Icons.group, size: 18),
+                                              Text(
+                                                "Seguindo: ${value.userDetail!.qtyfollowing}",
+                                              ),
+                                            ],
                                           ),
                                         ],
                                       ),
@@ -123,62 +140,8 @@ class _UserDetailPageState extends State<UserDetailPage> {
                                                   Text(repoValue.errorMessage!),
                                             );
                                           default:
-                                            return Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                const Text("Repositórios"),
-                                                ListView.builder(
-                                                    shrinkWrap: true,
-                                                    physics:
-                                                        const NeverScrollableScrollPhysics(),
-                                                    itemCount:
-                                                        repoValue.repos!.length,
-                                                    itemBuilder:
-                                                        (context, index) {
-                                                      return Container(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .all(8),
-                                                        margin: const EdgeInsets
-                                                            .all(3),
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          border: Border.all(
-                                                              width: 1),
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(10),
-                                                        ),
-                                                        child: Column(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .start,
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .start,
-                                                            children: [
-                                                              Text(
-                                                                repoValue
-                                                                    .repos![
-                                                                        index]
-                                                                    .name,
-                                                                style: const TextStyle(
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .bold),
-                                                              ),
-                                                              Text(repoValue
-                                                                  .repos![index]
-                                                                  .language
-                                                                  .toLowerCase()),
-                                                            ]),
-                                                      );
-                                                    }),
-                                              ],
-                                            );
+                                            return _buildRepositories(
+                                                repoValue);
                                         }
                                       },
                                     ),
@@ -196,6 +159,54 @@ class _UserDetailPageState extends State<UserDetailPage> {
           ),
         ),
       ),
+    );
+  }
+
+  Column _buildRepositories(RepositoriesController repoValue) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(top: 5, bottom: 5),
+          child: Text(
+            "REPOSITÓRIOS",
+            style: Theme.of(context)
+                .textTheme
+                .bodyLarge!
+                .copyWith(fontWeight: FontWeight.bold),
+          ),
+        ),
+        ListView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: repoValue.repos!.length,
+            itemBuilder: (context, index) {
+              return Container(
+                padding: const EdgeInsets.all(8),
+                margin: const EdgeInsets.all(3),
+                decoration: BoxDecoration(
+                  border: Border.all(width: 1),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          const Icon(Icons.book, size: 18),
+                          Text(
+                            repoValue.repos![index].name,
+                            style: const TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
+                      Text(repoValue.repos![index].language.toLowerCase()),
+                    ]),
+              );
+            }),
+      ],
     );
   }
 }
