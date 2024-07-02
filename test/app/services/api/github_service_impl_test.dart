@@ -1,3 +1,4 @@
+import 'package:buscador_de_usuarios/app/models/filters_model.dart';
 import 'package:buscador_de_usuarios/app/services/api/github_service_impl.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
@@ -57,12 +58,9 @@ void main() {
       when(() => httpClient.get(any(), headers: any(named: 'headers')))
           .thenAnswer((_) async => response);
 
-      final result = await service.searchUser(
-        httpClient,
-        username: 'maiara',
-        filter: 'location',
-        value: 'SP',
-      );
+      final result = await service.searchUser(httpClient,
+          username: 'maiara',
+          filters: [FiltersModel(filter: 'location', value: 'sp')]);
 
       expect(result.items.isNotEmpty, equals(true));
     });
@@ -73,12 +71,9 @@ void main() {
       when(() => httpClient.get(any(), headers: any(named: 'headers')))
           .thenAnswer((_) async => response);
 
-      final result = await service.searchUser(
-        httpClient,
-        username: 'maiara',
-        filter: 'language',
-        value: 'javascript',
-      );
+      final result = await service.searchUser(httpClient,
+          username: 'maiara',
+          filters: [FiltersModel(filter: 'language', value: 'javascript')]);
 
       expect(result.items.isNotEmpty, equals(true));
     });
@@ -89,12 +84,9 @@ void main() {
       when(() => httpClient.get(any(), headers: any(named: 'headers')))
           .thenAnswer((_) async => response);
 
-      final result = await service.searchUser(
-        httpClient,
-        username: 'maiara',
-        filter: 'folowers',
-        value: '1:15',
-      );
+      final result = await service.searchUser(httpClient,
+          username: 'maiara',
+          filters: [FiltersModel(filter: 'folowers', value: '>=15')]);
 
       expect(result.items.isNotEmpty, equals(true));
     });
@@ -105,12 +97,9 @@ void main() {
       when(() => httpClient.get(any(), headers: any(named: 'headers')))
           .thenAnswer((_) async => response);
 
-      final result = await service.searchUser(
-        httpClient,
-        username: 'maiara',
-        filter: 'repos',
-        value: '1..30',
-      );
+      final result = await service.searchUser(httpClient,
+          username: 'maiara',
+          filters: [FiltersModel(filter: 'repos', value: '>=30')]);
 
       expect(result.items.isNotEmpty, equals(true));
     });
@@ -121,12 +110,8 @@ void main() {
       when(() => httpClient.get(any(), headers: any(named: 'headers')))
           .thenAnswer((_) async => response);
 
-      final result = await service.searchUser(
-        httpClient,
-        username: 'maiara',
-        filter: '',
-        value: '',
-      );
+      final result = await service.searchUser(httpClient,
+          username: 'maiara', filters: [FiltersModel(filter: '', value: '')]);
 
       expect(result.items.isNotEmpty, equals(true));
     });
@@ -137,12 +122,9 @@ void main() {
       when(() => httpClient.get(any(), headers: any(named: 'headers')))
           .thenAnswer((_) async => response);
 
-      final result = await service.searchUser(
-        httpClient,
-        username: 'maiara',
-        filter: 'repos',
-        value: 'abc',
-      );
+      final result = await service.searchUser(httpClient,
+          username: 'maiara',
+          filters: [FiltersModel(filter: 'repos', value: 'abc')]);
 
       expect(result.items.isEmpty, equals(true));
     });
@@ -153,12 +135,9 @@ void main() {
       when(() => httpClient.get(any(), headers: any(named: 'headers')))
           .thenAnswer((_) async => response);
 
-      final result = await service.searchUser(
-        httpClient,
-        username: 'maiara',
-        filter: 'language',
-        value: 'dart',
-      );
+      final result = await service.searchUser(httpClient,
+          username: 'maiara',
+          filters: [FiltersModel(filter: 'language', value: 'dart')]);
 
       expect(result.items.isEmpty, equals(true));
     });

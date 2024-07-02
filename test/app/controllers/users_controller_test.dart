@@ -1,4 +1,5 @@
 import 'package:buscador_de_usuarios/app/controllers/users_controller.dart';
+import 'package:buscador_de_usuarios/app/models/filters_model.dart';
 import 'package:buscador_de_usuarios/app/models/users_model.dart';
 import 'package:buscador_de_usuarios/app/services/api/github_service_impl.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -42,10 +43,11 @@ void main() {
     });
 
     test("Pesquisando usuário", () async {
-      when(() => mockService.searchUser(any(),
-          username: any(named: 'username'),
-          filter: any(named: 'filter'),
-          value: any(named: 'value'))).thenAnswer(
+      when(() => mockService.searchUser(
+            any(),
+            username: any(named: 'username'),
+            filters: any(named: 'filters'),
+          )).thenAnswer(
         (_) async => ResultSearchModel(total: 1, items: [
           UsersModel(
               username: 'maiara',
@@ -54,7 +56,8 @@ void main() {
       );
 
       await controller.searchUser(
-          username: 'maiarachagas', filter: 'language', value: 'java');
+          username: 'maiarachagas',
+          filters: [FiltersModel(filter: 'language', value: 'java')]);
 
       expect(controller.result!.items.isNotEmpty, equals(true));
       expect(controller.users!.isNotEmpty, equals(true));
@@ -65,28 +68,31 @@ void main() {
           .thenAnswer((_) async => Future.value());
 
       when(() => mockStorage.getItem("searchHistory")).thenReturn(
-          '[{"search": "maiarachagas", "field": "language", "value": "java"}]');
+          '[{"search": "maiarachagas", "filters": [{"filter":"language", "value": "java"}]}]');
 
       controller.addToSearchHistory(
-          username: 'maiarachagas', filter: 'language', value: 'java');
+          username: 'maiarachagas',
+          filters: [FiltersModel(filter: 'language', value: 'java')]);
 
       expect(controller.searchHistory.isNotEmpty, equals(true));
     });
 
     test("Buscando histórico de pesquisa", () {
       when(() => mockStorage.getItem("searchHistory")).thenReturn(
-          '[{"search": "maiarachagas", "field": "language", "value": "dart"}]');
+          '[{"search": "maiarachagas", "filters": [{"filter":"language", "value": "dart"}]}]');
 
       controller.loadSearchHistory();
       expect(controller.searchHistory.isNotEmpty, equals(true));
       expect(controller.searchHistory.first['search'], equals("maiarachagas"));
-      expect(controller.searchHistory.first['field'], equals("language"));
-      expect(controller.searchHistory.first['value'], equals("dart"));
+      expect(controller.searchHistory.first['filters'][0]['filter'],
+          equals("language"));
+      expect(controller.searchHistory.first['filters'][0]['value'],
+          equals("dart"));
     });
 
     test("Limpando histórico de pesquisa", () {
       when(() => mockStorage.getItem("searchHistory")).thenReturn(
-          '[{"search": "maiarachagas", "field": "language", "value": "dart"}]');
+          '[{"search": "maiarachagas", "filters": [{"filter":"language", "value": "dart"}]}]');
       when(() => mockStorage.deleteItem("searchHistory"))
           .thenAnswer((_) async => Future.value());
 

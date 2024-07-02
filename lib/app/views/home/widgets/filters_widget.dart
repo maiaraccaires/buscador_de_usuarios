@@ -1,7 +1,8 @@
+import 'package:buscador_de_usuarios/app/models/filters_model.dart';
 import 'package:flutter/material.dart';
 
 class FilterWidget extends StatefulWidget {
-  final Function(Map<String, String>)? applyFilter;
+  final Function(List<FiltersModel>)? applyFilter;
   final VoidCallback? clearFilter;
 
   const FilterWidget({super.key, this.applyFilter, this.clearFilter});
@@ -11,13 +12,21 @@ class FilterWidget extends StatefulWidget {
 }
 
 class _FilterWidgetState extends State<FilterWidget> {
-  final controllerSearch = TextEditingController();
   final controllerLocation = TextEditingController();
   final controllerLanguage = TextEditingController();
   final controllerRepos = TextEditingController();
   final controllerFollowers = TextEditingController();
-  String filter = "";
-  String txt = "";
+  List<FiltersModel> list = <FiltersModel>[];
+
+  @override
+  void dispose() {
+    super.dispose();
+
+    controllerLocation.dispose();
+    controllerLanguage.dispose();
+    controllerRepos.dispose();
+    controllerFollowers.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,9 +42,8 @@ class _FilterWidgetState extends State<FilterWidget> {
           childrenPadding: EdgeInsets.zero,
           title: Text(
             "FILTRAR POR",
-            style: Theme.of(context).textTheme.titleLarge!.copyWith(
+            style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                   fontWeight: FontWeight.bold,
-                  fontSize: 18,
                 ),
           ),
           children: [
@@ -94,6 +102,7 @@ class _FilterWidgetState extends State<FilterWidget> {
                       controllerLanguage.clear();
                       controllerLocation.clear();
                       controllerRepos.clear();
+                      list.clear();
                       widget.clearFilter!();
                     },
                     style: ElevatedButton.styleFrom(
@@ -105,12 +114,7 @@ class _FilterWidgetState extends State<FilterWidget> {
                   const SizedBox(width: 10),
                   ElevatedButton(
                       onPressed: () {
-                        final filters = {
-                          'field': filter,
-                          'value': txt,
-                        };
-
-                        widget.applyFilter!(filters);
+                        widget.applyFilter!(list);
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.black,
@@ -147,11 +151,11 @@ class _FilterWidgetState extends State<FilterWidget> {
           height: 45,
           child: TextFormField(
             controller: controller,
-            onChanged: (value) {
-              setState(() {
-                filter = filterName;
-                txt = value;
-              });
+            onFieldSubmitted: (value) {
+              _updateFilters(filterName, value);
+            },
+            onEditingComplete: () {
+              _updateFilters(filterName, controller.text);
             },
             keyboardType: type,
             decoration: InputDecoration(
@@ -172,5 +176,20 @@ class _FilterWidgetState extends State<FilterWidget> {
         ),
       ],
     );
+  }
+
+  void _updateFilters(String filterName, String controller) {
+    setState(() {
+      final existingFilterIndex = list.indexWhere(
+        (filter) => filter.filter == filterName,
+      );
+      if (existingFilterIndex != -1) {
+        list[existingFilterIndex] =
+            FiltersModel(filter: filterName, value: controller);
+      } else {
+        list.add(FiltersModel(filter: filterName, value: controller));
+      }
+    });
+    FocusScope.of(context).unfocus();
   }
 }

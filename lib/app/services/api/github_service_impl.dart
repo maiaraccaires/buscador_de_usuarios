@@ -6,6 +6,7 @@ import '../../commons/url_github.dart';
 import '../../services/api/github_service.dart';
 import '../../env/env.dart';
 import '../../exceptions/api_exceptions.dart';
+import '../../models/filters_model.dart';
 import '../../models/repositories_model.dart';
 import '../../models/users_model.dart';
 
@@ -20,12 +21,19 @@ class GitHubServiceImpl implements GitHubService {
   Future<ResultSearchModel> searchUser(
     Client client, {
     required String username,
-    required String filter,
-    required String value,
+    required List<FiltersModel> filters,
   }) async {
     try {
-      var param =
-          filter.isNotEmpty && value.isNotEmpty ? "+$filter:$value" : "";
+      String param = "";
+      for (var i in filters) {
+        if (i.value.isNotEmpty) {
+          if (i.value.contains(RegExp(r'^[0-9]+'))) {
+            param += "+${i.filter}:>=${i.value}";
+          } else {
+            param += "+${i.filter}:${i.value.replaceAll(" ", "+")}";
+          }
+        }
+      }
 
       final url = Uri.parse("$_domain/search/users?q=$username$param");
 

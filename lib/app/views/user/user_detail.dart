@@ -90,17 +90,14 @@ class _UserDetailPageState extends State<UserDetailPage> {
                                     ),
                                     Padding(
                                       padding: const EdgeInsets.fromLTRB(
-                                          0, 15, 0, 10),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceAround,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
+                                          0, 10, 0, 10),
+                                      child: Column(
                                         children: [
                                           Row(
                                             children: [
                                               const Icon(Icons.book_outlined,
                                                   size: 18),
+                                              SizedBox(width: 5),
                                               Text(
                                                 "Repositórios: ${value.userDetail!.qtyRepos}",
                                               ),
@@ -110,6 +107,7 @@ class _UserDetailPageState extends State<UserDetailPage> {
                                             children: [
                                               const Icon(Icons.group_outlined,
                                                   size: 18),
+                                              SizedBox(width: 5),
                                               Text(
                                                 "Seguidores: ${value.userDetail!.qtyfollowers}",
                                               ),
@@ -118,6 +116,7 @@ class _UserDetailPageState extends State<UserDetailPage> {
                                           Row(
                                             children: [
                                               const Icon(Icons.group, size: 18),
+                                              SizedBox(width: 5),
                                               Text(
                                                 "Seguindo: ${value.userDetail!.qtyfollowing}",
                                               ),
@@ -199,9 +198,13 @@ class _UserDetailPageState extends State<UserDetailPage> {
                       Row(
                         children: [
                           const Icon(Icons.book, size: 18),
-                          Text(
-                            repoValue.repos![index].name,
-                            style: const TextStyle(fontWeight: FontWeight.bold),
+                          Flexible(
+                            child: Text(
+                              repoValue.repos![index].name,
+                              overflow: TextOverflow.ellipsis,
+                              style:
+                                  const TextStyle(fontWeight: FontWeight.bold),
+                            ),
                           ),
                         ],
                       ),

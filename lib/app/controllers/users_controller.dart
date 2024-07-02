@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:localstorage/localstorage.dart';
 
+import '../models/filters_model.dart';
 import '../models/users_model.dart';
 import '../services/api/github_service_impl.dart';
 
@@ -30,23 +31,19 @@ class UsersController with ChangeNotifier {
   String? get errorMessage => _errorMessage;
   ResultSearchModel? get result => _result;
 
-  Future<void> searchUser(
-      {required String username,
-      required String filter,
-      required String value}) async {
+  Future<void> searchUser({
+    required String username,
+    required List<FiltersModel> filters,
+  }) async {
     _state = UserState.loading;
     notifyListeners();
 
     try {
-      if (value.contains(RegExp(r'^[0-9]+'))) {
-        value = ">=$value";
-      }
-      if (value.isNotEmpty) {
-        value = value.replaceAll(" ", "+");
-      }
-
-      _result = await service.searchUser(_client,
-          username: username, filter: filter, value: value);
+      _result = await service.searchUser(
+        _client,
+        username: username,
+        filters: filters,
+      );
 
       _users = _result!.items;
 
@@ -74,10 +71,10 @@ class UsersController with ChangeNotifier {
     }
   }
 
-  void addToSearchHistory(
-      {required String username,
-      required String filter,
-      required String value}) {
+  void addToSearchHistory({
+    required String username,
+    required List<FiltersModel> filters,
+  }) {
     final searchHistoryJson = localStorage!.getItem("searchHistory");
     List history = searchHistoryJson != null
         ? List<Map<String, dynamic>>.from(jsonDecode(searchHistoryJson))
@@ -85,8 +82,7 @@ class UsersController with ChangeNotifier {
 
     history.add({
       "search": username,
-      "field": filter,
-      "value": value,
+      "filters": filters,
       "access_date": DateTime.now().toString()
     });
 
