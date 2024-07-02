@@ -71,11 +71,21 @@ class UsersController with ChangeNotifier {
       {required String username,
       required String filter,
       required String value}) {
-    List history = [];
-    history.add({"search": username, "field": filter, "value": value});
+    final searchHistoryJson = localStorage!.getItem("searchHistory");
+    List history = searchHistoryJson != null
+        ? List<Map<String, dynamic>>.from(jsonDecode(searchHistoryJson))
+        : [];
+
+    history.add({
+      "search": username,
+      "field": filter,
+      "value": value,
+      "access_date": DateTime.now().toString()
+    });
 
     localStorage!.setItem("searchHistory", jsonEncode(history));
 
+    loadSearchHistory();
     notifyListeners();
   }
 
