@@ -6,6 +6,7 @@ import 'controllers/repositories_controller.dart';
 import 'controllers/users_controller.dart';
 import 'dependency_injection.dart';
 import 'services/api/github_service_impl.dart';
+import 'views/home/home_page.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -26,11 +27,13 @@ class MyApp extends StatelessWidget {
         ),
       ],
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: 'Buscador de Usuários',
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.indigo.shade300),
           useMaterial3: true,
         ),
+        home: const HomePage(),
       ),
     );
   }
