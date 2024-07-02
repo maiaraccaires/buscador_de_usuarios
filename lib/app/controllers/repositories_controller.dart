@@ -27,8 +27,9 @@ class RepositoriesController with ChangeNotifier {
     notifyListeners();
     try {
       _repos = await service.getRepositories(_client, endpoint: url);
-
-      _state = RepositoriesState.loading;
+      _repos!.sort(
+          (a, b) => b.updatedAt.toString().compareTo(a.updatedAt.toString()));
+      _state = RepositoriesState.success;
       notifyListeners();
     } catch (e) {
       _state = RepositoriesState.error;
