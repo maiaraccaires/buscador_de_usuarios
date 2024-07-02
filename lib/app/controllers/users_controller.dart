@@ -36,7 +36,12 @@ class UsersController with ChangeNotifier {
     notifyListeners();
 
     try {
-      value = value.isNotEmpty ? value.replaceAll(" ", "+") : value;
+      if (value.contains(RegExp(r'^[0-9]+'))) {
+        value = ">=$value";
+      }
+      if (value.isNotEmpty) {
+        value = value.replaceAll(" ", "+");
+      }
 
       _users = await service.searchUser(_client,
           username: username, filter: filter, value: value);

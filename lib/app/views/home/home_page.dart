@@ -37,7 +37,6 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     var controller = Provider.of<UsersController>(context, listen: false);
     return Scaffold(
-      //appBar: AppBar(),
       body: SafeArea(
         child: SingleChildScrollView(
           physics: const ScrollPhysics(),
@@ -70,10 +69,15 @@ class _HomePageState extends State<HomePage> {
                                 height: 45,
                                 child: TextFormField(
                                   controller: controllerSearch,
-                                  decoration: const InputDecoration(
-                                    contentPadding: EdgeInsets.symmetric(
+                                  decoration: InputDecoration(
+                                    contentPadding: const EdgeInsets.symmetric(
                                         horizontal: 10, vertical: 3),
-                                    border: OutlineInputBorder(
+                                    hintText: "Digite um username",
+                                    hintStyle: Theme.of(context)
+                                        .textTheme
+                                        .labelMedium!
+                                        .copyWith(color: Colors.grey),
+                                    border: const OutlineInputBorder(
                                       borderRadius: BorderRadius.only(
                                         topLeft: Radius.circular(10.0),
                                         bottomLeft: Radius.circular(10.0),

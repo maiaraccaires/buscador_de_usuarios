@@ -40,20 +40,20 @@ class _FilterWidgetState extends State<FilterWidget> {
           ),
           children: [
             _buildFilterField(
-              label: "Localidade",
-              controller: controllerLocation,
-              filterName: "location",
-              type: TextInputType.text,
-            ),
+                label: "Localidade",
+                controller: controllerLocation,
+                filterName: "location",
+                type: TextInputType.text,
+                hintText: 'Digite uma localização'),
             const SizedBox(
               height: 10,
             ),
             _buildFilterField(
-              label: "Linguagem de Programação",
-              controller: controllerLanguage,
-              filterName: "language",
-              type: TextInputType.text,
-            ),
+                label: "Linguagem de Programação",
+                controller: controllerLanguage,
+                filterName: "language",
+                type: TextInputType.text,
+                hintText: 'Digite uma linguagem de programação'),
             const SizedBox(
               height: 10,
             ),
@@ -63,22 +63,22 @@ class _FilterWidgetState extends State<FilterWidget> {
               children: [
                 Expanded(
                   child: _buildFilterField(
-                    label: "Nº de Seguidores",
-                    controller: controllerFollowers,
-                    filterName: "followers",
-                    type: TextInputType.number,
-                  ),
+                      label: "Nº de Seguidores",
+                      controller: controllerFollowers,
+                      filterName: "followers",
+                      type: TextInputType.number,
+                      hintText: 'Digite nº mín. de seguidores'),
                 ),
                 const SizedBox(
                   width: 10,
                 ),
                 Expanded(
                   child: _buildFilterField(
-                    label: "Nº de Repositórios",
-                    controller: controllerRepos,
-                    filterName: "repos",
-                    type: TextInputType.number,
-                  ),
+                      label: "Nº de Repositórios",
+                      controller: controllerRepos,
+                      filterName: "repos",
+                      type: TextInputType.number,
+                      hintText: 'Digite nº mín. de repositório'),
                 ),
               ],
             ),
@@ -126,11 +126,13 @@ class _FilterWidgetState extends State<FilterWidget> {
     );
   }
 
-  Widget _buildFilterField(
-      {required String label,
-      required TextEditingController controller,
-      required String filterName,
-      required TextInputType type}) {
+  Widget _buildFilterField({
+    required String label,
+    required TextEditingController controller,
+    required String filterName,
+    required TextInputType type,
+    String? hintText,
+  }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -152,9 +154,15 @@ class _FilterWidgetState extends State<FilterWidget> {
               });
             },
             keyboardType: type,
-            decoration: const InputDecoration(
-              contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 3),
-              border: OutlineInputBorder(
+            decoration: InputDecoration(
+              contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
+              hintText: hintText,
+              hintStyle: Theme.of(context)
+                  .textTheme
+                  .labelMedium!
+                  .copyWith(color: Colors.grey),
+              border: const OutlineInputBorder(
                 borderRadius: BorderRadius.all(
                   Radius.circular(10.0),
                 ),
