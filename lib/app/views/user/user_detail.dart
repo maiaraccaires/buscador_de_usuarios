@@ -16,8 +16,11 @@ class _UserDetailPageState extends State<UserDetailPage> {
   @override
   void initState() {
     super.initState();
-    Provider.of<UsersController>(context, listen: false)
-        .getDetailUser(username: widget.username);
+
+    var controller = Provider.of<UsersController>(context, listen: false);
+    Future.delayed(const Duration(seconds: 0), () {
+      controller.getDetailUser(username: widget.username);
+    });
   }
 
   @override
