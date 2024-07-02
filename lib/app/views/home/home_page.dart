@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../../controllers/users_controller.dart';
 import '../../models/filters_model.dart';
-import '../user/search_history_page.dart';
+import '../search_history/search_history_page.dart';
 import 'widgets/filters_widget.dart';
 import 'widgets/list_users_widget.dart';
 
