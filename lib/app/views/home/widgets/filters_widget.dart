@@ -114,7 +114,7 @@ class _FilterWidgetState extends State<FilterWidget> {
                   const SizedBox(width: 10),
                   ElevatedButton(
                       onPressed: () {
-                        widget.applyFilter!(list);
+                         submitFilters();
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.black,
@@ -151,11 +151,8 @@ class _FilterWidgetState extends State<FilterWidget> {
           height: 45,
           child: TextFormField(
             controller: controller,
-            onFieldSubmitted: (value) {
-              _updateFilters(filterName, value);
-            },
-            onEditingComplete: () {
-              _updateFilters(filterName, controller.text);
+             onFieldSubmitted: (value) {
+              submitFilters();
             },
             keyboardType: type,
             decoration: InputDecoration(
@@ -176,6 +173,23 @@ class _FilterWidgetState extends State<FilterWidget> {
         ),
       ],
     );
+  }
+
+    void submitFilters() {
+    if (controllerFollowers.text.isNotEmpty) {
+      _updateFilters("followers", controllerFollowers.text);
+    }
+    if (controllerLanguage.text.isNotEmpty) {
+      _updateFilters("language", controllerLanguage.text);
+    }
+    if (controllerLocation.text.isNotEmpty) {
+      _updateFilters("location", controllerLocation.text);
+    }
+    if (controllerRepos.text.isNotEmpty) {
+      _updateFilters("repos", controllerRepos.text);
+    }
+
+    widget.applyFilter!(list);
   }
 
   void _updateFilters(String filterName, String controller) {
