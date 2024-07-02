@@ -1,5 +1,35 @@
 import 'dart:convert';
 
+class ResultSearchModel {
+  int total;
+  List<UsersModel> items;
+
+  ResultSearchModel({
+    required this.total,
+    required this.items,
+  });
+
+  Map<String, dynamic> toMap() {
+    return {
+      'total': total,
+      'items': items.map((x) => x.toMap()).toList(),
+    };
+  }
+
+  factory ResultSearchModel.fromMap(Map<String, dynamic> map) {
+    return ResultSearchModel(
+      total: map['total_count']?.toInt() ?? 0,
+      items: List<UsersModel>.from(
+          map['items']?.map((x) => UsersModel.fromMap(x))),
+    );
+  }
+
+  String toJson() => json.encode(toMap());
+
+  factory ResultSearchModel.fromJson(String source) =>
+      ResultSearchModel.fromMap(json.decode(source));
+}
+
 class UsersModel {
   String username;
   String avatar;

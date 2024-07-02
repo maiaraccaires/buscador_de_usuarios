@@ -17,7 +17,7 @@ class GitHubServiceImpl implements GitHubService {
   };
 
   @override
-  Future<List<UsersModel>> searchUser(
+  Future<ResultSearchModel> searchUser(
     Client client, {
     required String username,
     required String filter,
@@ -31,15 +31,12 @@ class GitHubServiceImpl implements GitHubService {
 
       final result = await client.get(url, headers: _headers);
 
-      List list = [];
-
       if (result.statusCode == 200) {
         var decodedResult = jsonDecode(result.body);
-        list = decodedResult["items"] as List;
 
-        return list.map((data) => UsersModel.fromMap(data)).toList();
+        return ResultSearchModel.fromMap(decodedResult);
       } else {
-        return <UsersModel>[];
+        return ResultSearchModel(total: 0, items: []);
       }
     } catch (e) {
       throw ApiException(object: [], message: e.toString());

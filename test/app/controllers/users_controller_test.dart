@@ -42,19 +42,21 @@ void main() {
     });
 
     test("Pesquisando usuário", () async {
-      when(() =>
-          mockService.searchUser(any(),
-              username: any(named: 'username'),
-              filter: any(named: 'filter'),
-              value: any(named: 'value'))).thenAnswer((_) async => [
-            UsersModel(
-                username: 'maiara',
-                avatar: 'https://avatars.githubusercontent.com/u/7199836?v=4')
-          ]);
+      when(() => mockService.searchUser(any(),
+          username: any(named: 'username'),
+          filter: any(named: 'filter'),
+          value: any(named: 'value'))).thenAnswer(
+        (_) async => ResultSearchModel(total: 1, items: [
+          UsersModel(
+              username: 'maiara',
+              avatar: 'https://avatars.githubusercontent.com/u/7199836?v=4'),
+        ]),
+      );
 
       await controller.searchUser(
           username: 'maiarachagas', filter: 'language', value: 'java');
 
+      expect(controller.result!.items.isNotEmpty, equals(true));
       expect(controller.users!.isNotEmpty, equals(true));
     });
 

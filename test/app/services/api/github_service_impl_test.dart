@@ -57,14 +57,14 @@ void main() {
       when(() => httpClient.get(any(), headers: any(named: 'headers')))
           .thenAnswer((_) async => response);
 
-      final users = await service.searchUser(
+      final result = await service.searchUser(
         httpClient,
         username: 'maiara',
         filter: 'location',
         value: 'SP',
       );
 
-      expect(users.isNotEmpty, equals(true));
+      expect(result.items.isNotEmpty, equals(true));
     });
 
     test("Buscar usuários por linguagem de programação", () async {
@@ -73,14 +73,14 @@ void main() {
       when(() => httpClient.get(any(), headers: any(named: 'headers')))
           .thenAnswer((_) async => response);
 
-      final users = await service.searchUser(
+      final result = await service.searchUser(
         httpClient,
         username: 'maiara',
         filter: 'language',
         value: 'javascript',
       );
 
-      expect(users.isNotEmpty, equals(true));
+      expect(result.items.isNotEmpty, equals(true));
     });
 
     test("Buscar usuários por número de seguidores", () async {
@@ -89,14 +89,14 @@ void main() {
       when(() => httpClient.get(any(), headers: any(named: 'headers')))
           .thenAnswer((_) async => response);
 
-      final users = await service.searchUser(
+      final result = await service.searchUser(
         httpClient,
         username: 'maiara',
         filter: 'folowers',
         value: '1:15',
       );
 
-      expect(users.isNotEmpty, equals(true));
+      expect(result.items.isNotEmpty, equals(true));
     });
 
     test("Buscar usuários por número de repositório", () async {
@@ -105,14 +105,14 @@ void main() {
       when(() => httpClient.get(any(), headers: any(named: 'headers')))
           .thenAnswer((_) async => response);
 
-      final users = await service.searchUser(
+      final result = await service.searchUser(
         httpClient,
         username: 'maiara',
         filter: 'repos',
         value: '1..30',
       );
 
-      expect(users.isNotEmpty, equals(true));
+      expect(result.items.isNotEmpty, equals(true));
     });
 
     test("Buscar usuários por username", () async {
@@ -121,14 +121,14 @@ void main() {
       when(() => httpClient.get(any(), headers: any(named: 'headers')))
           .thenAnswer((_) async => response);
 
-      final users = await service.searchUser(
+      final result = await service.searchUser(
         httpClient,
         username: 'maiara',
         filter: '',
         value: '',
       );
 
-      expect(users.isNotEmpty, equals(true));
+      expect(result.items.isNotEmpty, equals(true));
     });
 
     test("Informar dados de filtro errado", () async {
@@ -137,14 +137,14 @@ void main() {
       when(() => httpClient.get(any(), headers: any(named: 'headers')))
           .thenAnswer((_) async => response);
 
-      final users = await service.searchUser(
+      final result = await service.searchUser(
         httpClient,
         username: 'maiara',
         filter: 'repos',
         value: 'abc',
       );
 
-      expect(users.isEmpty, equals(true));
+      expect(result.items.isEmpty, equals(true));
     });
 
     test("Dados não encontrados", () async {
@@ -153,14 +153,14 @@ void main() {
       when(() => httpClient.get(any(), headers: any(named: 'headers')))
           .thenAnswer((_) async => response);
 
-      final users = await service.searchUser(
+      final result = await service.searchUser(
         httpClient,
         username: 'maiara',
         filter: 'language',
         value: 'dart',
       );
 
-      expect(users.isEmpty, equals(true));
+      expect(result.items.isEmpty, equals(true));
     });
 
     test("Listar nomes de repositórios do usuário", () async {

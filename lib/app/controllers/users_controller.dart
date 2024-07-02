@@ -22,11 +22,13 @@ class UsersController with ChangeNotifier {
   UserState _state = UserState.idle;
   String? _errorMessage;
   List searchHistory = [];
+  ResultSearchModel? _result;
 
   List<UsersModel>? get users => _users;
   UsersModel? get userDetail => _userDetail;
   UserState get status => _state;
   String? get errorMessage => _errorMessage;
+  ResultSearchModel? get result => _result;
 
   Future<void> searchUser(
       {required String username,
@@ -43,8 +45,10 @@ class UsersController with ChangeNotifier {
         value = value.replaceAll(" ", "+");
       }
 
-      _users = await service.searchUser(_client,
+      _result = await service.searchUser(_client,
           username: username, filter: filter, value: value);
+
+      _users = _result!.items;
 
       _state = UserState.success;
 
