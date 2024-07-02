@@ -35,10 +35,10 @@ class SearchHistoryWidget extends StatelessWidget {
                     children: [
                       Text(
                         "PESQUISAS RECENTES",
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodyLarge!
-                            .copyWith(fontWeight: FontWeight.bold),
+                        style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18,
+                            ),
                       ),
                       InkWell(
                         onTap: () {
@@ -72,19 +72,18 @@ class SearchHistoryWidget extends StatelessWidget {
                         child: Padding(
                           padding: const EdgeInsets.symmetric(vertical: 5.0),
                           child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                "${value.searchHistory[index]["search"]}",
+                                value.searchHistory[index]["search"],
+                                style: Theme.of(context).textTheme.bodyMedium,
                               ),
-                              if (value.searchHistory[index]["field"]
-                                  .toString()
-                                  .isNotEmpty)
-                                Text(
-                                  formatDate(value.searchHistory[index]
-                                      ["access_date"]),
-                                ),
+                              Text(
+                                formatDate(
+                                    value.searchHistory[index]["access_date"]),
+                                style: Theme.of(context).textTheme.bodySmall,
+                              ),
                             ],
                           ),
                         ),

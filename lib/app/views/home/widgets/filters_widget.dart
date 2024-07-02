@@ -33,23 +33,27 @@ class _FilterWidgetState extends State<FilterWidget> {
           childrenPadding: EdgeInsets.zero,
           title: Text(
             "FILTRAR POR",
-            style: Theme.of(context)
-                .textTheme
-                .bodyLarge!
-                .copyWith(fontWeight: FontWeight.bold),
+            style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                ),
           ),
           children: [
             _buildFilterField(
-                label: "Localidade",
-                controller: controllerLocation,
-                filterName: "location"),
+              label: "Localidade",
+              controller: controllerLocation,
+              filterName: "location",
+              type: TextInputType.text,
+            ),
             const SizedBox(
               height: 10,
             ),
             _buildFilterField(
-                label: "Linguagem de Programação",
-                controller: controllerLanguage,
-                filterName: "language"),
+              label: "Linguagem de Programação",
+              controller: controllerLanguage,
+              filterName: "language",
+              type: TextInputType.text,
+            ),
             const SizedBox(
               height: 10,
             ),
@@ -59,18 +63,22 @@ class _FilterWidgetState extends State<FilterWidget> {
               children: [
                 Expanded(
                   child: _buildFilterField(
-                      label: "Nº de Seguidores",
-                      controller: controllerFollowers,
-                      filterName: "followers"),
+                    label: "Nº de Seguidores",
+                    controller: controllerFollowers,
+                    filterName: "followers",
+                    type: TextInputType.number,
+                  ),
                 ),
                 const SizedBox(
                   width: 10,
                 ),
                 Expanded(
                   child: _buildFilterField(
-                      label: "Nº de Repositórios",
-                      controller: controllerRepos,
-                      filterName: "repos"),
+                    label: "Nº de Repositórios",
+                    controller: controllerRepos,
+                    filterName: "repos",
+                    type: TextInputType.number,
+                  ),
                 ),
               ],
             ),
@@ -81,14 +89,19 @@ class _FilterWidgetState extends State<FilterWidget> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   ElevatedButton(
-                      onPressed: () {
-                        controllerFollowers.clear();
-                        controllerLanguage.clear();
-                        controllerLocation.clear();
-                        controllerRepos.clear();
-                        widget.clearFilter!();
-                      },
-                      child: const Text("Limpar filtro")),
+                    onPressed: () {
+                      controllerFollowers.clear();
+                      controllerLanguage.clear();
+                      controllerLocation.clear();
+                      controllerRepos.clear();
+                      widget.clearFilter!();
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.white10,
+                      foregroundColor: Colors.black,
+                    ),
+                    child: const Text("Limpar filtro"),
+                  ),
                   const SizedBox(width: 10),
                   ElevatedButton(
                       onPressed: () {
@@ -99,6 +112,10 @@ class _FilterWidgetState extends State<FilterWidget> {
 
                         widget.applyFilter!(filters);
                       },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.black,
+                        foregroundColor: Colors.white,
+                      ),
                       child: const Text("Aplicar filtro")),
                 ],
               ),
@@ -109,17 +126,20 @@ class _FilterWidgetState extends State<FilterWidget> {
     );
   }
 
-  Widget _buildFilterField({
-    required String label,
-    required TextEditingController controller,
-    required String filterName,
-  }) {
+  Widget _buildFilterField(
+      {required String label,
+      required TextEditingController controller,
+      required String filterName,
+      required TextInputType type}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
           padding: const EdgeInsets.only(bottom: 3),
-          child: Text(label),
+          child: Text(
+            label,
+            style: Theme.of(context).textTheme.titleMedium,
+          ),
         ),
         SizedBox(
           height: 45,
@@ -131,6 +151,7 @@ class _FilterWidgetState extends State<FilterWidget> {
                 txt = value;
               });
             },
+            keyboardType: type,
             decoration: const InputDecoration(
               contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 3),
               border: OutlineInputBorder(

@@ -53,10 +53,10 @@ class _HomePageState extends State<HomePage> {
                       padding: const EdgeInsets.only(top: 40, bottom: 5),
                       child: Text(
                         "BUSCAR",
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodyLarge!
-                            .copyWith(fontWeight: FontWeight.bold),
+                        style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18,
+                            ),
                       ),
                     ),
                     Column(
@@ -73,37 +73,51 @@ class _HomePageState extends State<HomePage> {
                                     contentPadding: EdgeInsets.symmetric(
                                         horizontal: 10, vertical: 3),
                                     border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.all(
-                                        Radius.circular(10.0),
+                                      borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(10.0),
+                                        bottomLeft: Radius.circular(10.0),
                                       ),
                                     ),
                                   ),
                                 ),
                               ),
                             ),
-                            const SizedBox(width: 10),
-                            InkWell(
-                              onTap: () {
-                                if (controllerSearch.text.isNotEmpty) {
-                                  Provider.of<UsersController>(context,
-                                          listen: false)
-                                      .searchUser(
-                                          username: controllerSearch.text,
-                                          filter: filter,
-                                          value: txt);
-                                  controllerSearch.clear();
+                            Container(
+                              height: 45,
+                              decoration: const BoxDecoration(
+                                color: Colors.black,
+                                borderRadius: BorderRadius.only(
+                                  topRight: Radius.circular(10.0),
+                                  bottomRight: Radius.circular(10.0),
+                                ),
+                              ),
+                              child: InkWell(
+                                onTap: () {
+                                  if (controllerSearch.text.isNotEmpty) {
+                                    Provider.of<UsersController>(context,
+                                            listen: false)
+                                        .searchUser(
+                                            username: controllerSearch.text,
+                                            filter: filter,
+                                            value: txt);
+                                    controllerSearch.clear();
 
-                                  Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                      builder: ((context) =>
-                                          const UsersListPage()),
-                                    ),
-                                  );
-                                }
-                              },
-                              child: const Icon(
-                                Icons.search,
-                                size: 32,
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: ((context) =>
+                                            const UsersListPage()),
+                                      ),
+                                    );
+                                  }
+                                },
+                                child: const Padding(
+                                  padding: EdgeInsets.all(3.0),
+                                  child: Icon(
+                                    Icons.search,
+                                    size: 32,
+                                    color: Colors.white,
+                                  ),
+                                ),
                               ),
                             ),
                           ],

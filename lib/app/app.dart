@@ -26,14 +26,10 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ],
-      child: MaterialApp(
+      child: const MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Buscador de Usuários',
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.indigo.shade300),
-          useMaterial3: true,
-        ),
-        home: const HomePage(),
+        home: HomePage(),
       ),
     );
   }
